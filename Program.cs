@@ -1,6 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using schoolmangment.MVC.Database;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<SchoolMGTContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolMGTContext") ?? throw new InvalidOperationException("Connection string 'SchoolMGTContext' not found.")));
 
 // Add services to the container.
+var conn = builder.Configuration.GetConnectionString("SchoolMGTConnection");
+
+builder.Services.AddDbContext<SchoolMgtContext>(q => q.UseSqlServer(conn));
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
